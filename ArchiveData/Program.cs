@@ -45,28 +45,15 @@ namespace ArchiveData
             // MySQL i MSSqlServera poredjenje preformansi 
 
             using var db = new ApplicationDBContext();
-
-            var configBulkInsertTest6 = new TestConfig(1000000,
-                                                       TestEnum.Test6,
-                                                       TestType.OnlyBulkInsert);
-            var result = TestArchiveService.TestBulkInsertOnly(configBulkInsertTest6, db);
-            TestUI.ShowMeasurementsResults(result);
-
-            var configBulkInsertTest4 = new TestConfig(5000000,
-                                                      TestEnum.Test4,
-                                                      TestType.OnlyBulkInsert);
-            var result1 = TestArchiveService.TestBulkInsertOnly(configBulkInsertTest4, db);
-            TestUI.ShowMeasurementsResults(result1);
-
-            var configBulkInsertTest1 = new TestConfig(10000000,
-                                                     TestEnum.Test1,
-                                                     TestType.OnlyBulkInsert);
-            var result2 = TestArchiveService.TestBulkInsertOnly(configBulkInsertTest1, db);
-            TestUI.ShowMeasurementsResults(result2);
-            TestArchiveService.Reset(db);
+            TestArchiveService services = new TestArchiveService(new MockDataService());
+            services.RunOnlySaveChangesTests(db);
+            //services.Reset(db);
+            
+           
             ReadLine();
 
         }
+        
         
     }
 }

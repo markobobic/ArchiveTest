@@ -1,4 +1,5 @@
-﻿using ArchiveData.Tests;
+﻿using ArchiveData.Extensions;
+using ArchiveData.Tests;
 using System;
 using static System.Console;
 
@@ -19,6 +20,10 @@ namespace ArchiveData.UI
             WriteLine($"===============>END OF TEST:{result.TestEnum.ToString().ToUpper()}<===================");
             WriteLine();
             
+        }
+        public static void WriteOrdinalIterations(int i,TimeSpan ts)
+        {
+            Console.WriteLine($"{i.ToOrdinalNumbers()} iteration: {ts}");
         }
         public static void ShowStartOfTest(TestConfig config)
         {

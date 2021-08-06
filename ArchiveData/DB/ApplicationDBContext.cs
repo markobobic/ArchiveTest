@@ -49,13 +49,15 @@ namespace ArchiveData.DB
         private void ArchiveTable()
         {
             int maxLimit = int.MaxValue;
+            int archiveLimit = 0;
             var entitiesListCount = InputNotificationEventEntities.Count();
             DetermineMaxLimit(ref maxLimit, entitiesListCount);
+            DetermineArchivingLimit(ref archiveLimit, entitiesListCount); 
             if (entitiesListCount > maxLimit)
             {
-                var archivedInputs = InputNotificationEventEntities.OrderByDescending(x => x.SourceEventTimeStampUtc).Take(6000);
-                this.BulkInsert(archivedInputs.ToArchived().ToList());
-                this.BulkDelete(archivedInputs.ToList());
+                var archivedInputs = InputNotificationEventEntities.OrderByDescending(x => x.SourceEventTimeStampUtc).Take(archiveLimit);
+                ArchivedInputNotifications.BulkInsert(archivedInputs.ToArchived());
+                InputNotificationEventEntities.BulkDelete(archivedInputs);
 
             }
             
@@ -65,34 +67,45 @@ namespace ArchiveData.DB
         {
             switch (entitiesListCount)
             {
-                case 10010500:
+                case 10010500 or 10010501:
                     maxLimit = 10010000;
                     break;
-                case 5010000:
-                    maxLimit = 5010500;
+                case 5010500 or 5010501:
+                    maxLimit = 5010000;
                     break;
-                case 1010000:
-                    maxLimit = 1010500;
+                case 1010500 or 1010501:
+                    maxLimit = 1010000;
                     break;
                 default:
                     break;
             }
         }
-
-        //to delete all
-        //public override int SaveChanges()
-        //{
-
-        //    var entitiesList = InputNotificationEventEntities.ToArray();
-        //    var archivedList = ArchivedInputNotifications.ToArray();
-
-
-        //    ArchivedInputNotifications.BulkDelete(archivedList);
-        //    InputNotificationEventEntities.BulkDelete(entitiesList);
-
-
-
-        //    return base.SaveChanges();
-        //}
+        public static void DetermineArchivingLimit(ref int archiveLimit, int entitiesListCount)
+        {
+            switch (entitiesListCount)
+            {
+                case 10010501:
+                    archiveLimit = 2000000;
+                    break;
+                case 1001050:
+                    archiveLimit = 200000;
+                    break;
+                case 5010501:
+                    archiveLimit = 1000000;
+                    break;
+                case 5010500:
+                    archiveLimit = 200000;
+                    break;
+                case 1010501:
+                    archiveLimit = 500000;
+                    break;
+                case 1010500:
+                    archiveLimit = 200000;
+                    break;
+                default:
+                    break;
+            }
+        }
+        
     }
 }
