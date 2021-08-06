@@ -18,5 +18,17 @@ namespace ArchiveData.Extensions
                SourceEventTimeStampUtc = x.SourceEventTimeStampUtc
 
            });
+
+        public static string ToOrdinalNumbers(this int iteration)
+        {
+            switch (iteration)
+            {
+                case 1: return "First";
+                case 2: return "Second";
+                case 3: return "Thrid";
+                default:
+                   return iteration.ToString();
+            }
+        }
     }
 }

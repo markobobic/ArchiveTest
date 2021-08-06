@@ -1,5 +1,7 @@
 ﻿using ArchiveData.DB;
+using ArchiveData.Services;
 using ArchiveData.Tests;
+using ArchiveData.UI;
 using static System.Console;
 
 namespace ArchiveData
@@ -44,14 +46,25 @@ namespace ArchiveData
 
             using var db = new ApplicationDBContext();
 
-            var configBulkInsertTest1 = new TestConfig(1000000,
-                                                       TestEnum.Test1,
+            var configBulkInsertTest6 = new TestConfig(1000000,
+                                                       TestEnum.Test6,
                                                        TestType.OnlyBulkInsert);
-            var result = TestArchive.TestBulkInsertOnly(configBulkInsertTest1, db);
-            WriteLine($"For test {result.TestEnum} type {result.TestType} avg seconds spent {result.TotalSecondsSpent}");
-            ReadLine();
+            var result = TestArchiveService.TestBulkInsertOnly(configBulkInsertTest6, db);
+            TestUI.ShowMeasurementsResults(result);
 
+            var configBulkInsertTest5 = new TestConfig(5000000,
+                                                      TestEnum.Test5,
+                                                      TestType.OnlyBulkInsert);
+            var result1 = TestArchiveService.TestBulkInsertOnly(configBulkInsertTest5, db);
+            TestUI.ShowMeasurementsResults(result1);
+
+            var configBulkInsertTest1 = new TestConfig(10000000,
+                                                     TestEnum.Test1,
+                                                     TestType.OnlyBulkInsert);
+            var result2 = TestArchiveService.TestBulkInsertOnly(configBulkInsertTest1, db);
+            TestUI.ShowMeasurementsResults(result2);
             //TestArchive.Reset(db);
+            ReadLine();
 
         }
         

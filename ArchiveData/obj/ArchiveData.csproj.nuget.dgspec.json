@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\PC\\source\\repos\\ArchiveData\\ArchiveData\\ArchiveData.csproj": {}
+    "C:\\Users\\PC\\Desktop\\ArchiveTest\\ArchiveData\\ArchiveData.csproj": {}
   },
   "projects": {
-    "C:\\Users\\PC\\source\\repos\\ArchiveData\\ArchiveData\\ArchiveData.csproj": {
+    "C:\\Users\\PC\\Desktop\\ArchiveTest\\ArchiveData\\ArchiveData.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\PC\\source\\repos\\ArchiveData\\ArchiveData\\ArchiveData.csproj",
+        "projectUniqueName": "C:\\Users\\PC\\Desktop\\ArchiveTest\\ArchiveData\\ArchiveData.csproj",
         "projectName": "ArchiveData",
-        "projectPath": "C:\\Users\\PC\\source\\repos\\ArchiveData\\ArchiveData\\ArchiveData.csproj",
+        "projectPath": "C:\\Users\\PC\\Desktop\\ArchiveTest\\ArchiveData\\ArchiveData.csproj",
         "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\PC\\source\\repos\\ArchiveData\\ArchiveData\\obj\\",
+        "outputPath": "C:\\Users\\PC\\Desktop\\ArchiveTest\\ArchiveData\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
