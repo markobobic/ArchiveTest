@@ -52,10 +52,10 @@ namespace ArchiveData
             var result = TestArchiveService.TestBulkInsertOnly(configBulkInsertTest6, db);
             TestUI.ShowMeasurementsResults(result);
 
-            var configBulkInsertTest5 = new TestConfig(5000000,
-                                                      TestEnum.Test5,
+            var configBulkInsertTest4 = new TestConfig(5000000,
+                                                      TestEnum.Test4,
                                                       TestType.OnlyBulkInsert);
-            var result1 = TestArchiveService.TestBulkInsertOnly(configBulkInsertTest5, db);
+            var result1 = TestArchiveService.TestBulkInsertOnly(configBulkInsertTest4, db);
             TestUI.ShowMeasurementsResults(result1);
 
             var configBulkInsertTest1 = new TestConfig(10000000,
@@ -63,7 +63,7 @@ namespace ArchiveData
                                                      TestType.OnlyBulkInsert);
             var result2 = TestArchiveService.TestBulkInsertOnly(configBulkInsertTest1, db);
             TestUI.ShowMeasurementsResults(result2);
-            //TestArchive.Reset(db);
+            TestArchiveService.Reset(db);
             ReadLine();
 
         }

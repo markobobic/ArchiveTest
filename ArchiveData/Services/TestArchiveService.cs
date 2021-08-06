@@ -1,6 +1,7 @@
 ﻿using ArchiveData.DB;
 using ArchiveData.Extensions;
 using ArchiveData.Tests;
+using ArchiveData.UI;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace ArchiveData.Services
             Stopwatch stopWatch = new Stopwatch();
             var mockData = MockDataService.Populate(config);
             mockData.Select(l => db.Entry(l).State = EntityState.Added).FirstOrDefault();
+            TestUI.ShowStartOfTest(config);
             for (int i = 1; i <= 3; i++)
             {
                 stopWatch.Start();

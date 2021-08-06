@@ -16,43 +16,48 @@ namespace ArchiveData.UI
 
             description();
             WriteLine($"For test {result.TestEnum} type {result.TestType} avg seconds spent {result.TotalSecondsSpent}");
+            WriteLine($"===============>END OF TEST:{result.TestEnum.ToString().ToUpper()}<===================");
             WriteLine();
             
         }
+        public static void ShowStartOfTest(TestConfig config)
+        {
+            WriteLine($"===============>START OF:{config.TestEnum.ToString().ToUpper()}<===================");
 
+        }
         private static void DescriptionBulkInsert(TestEnum testEnum)
         {
             switch (testEnum)
             {
                 case TestEnum.Test1:
-                    WriteLine("-------------DESCRIPTION---------------------");
-                    WriteLine("BulkInsert: 10 000 000");
+                    WriteLine("-------------SPECIFICATION---------------------");
+                    WriteLine("BulkInsert initial records: 10 000 000");
                     WriteLine("---------------------------------------------");
 
                     break;
                 case TestEnum.Test2:
-                    WriteLine("-------------DESCRIPTION---------------------");
-                    WriteLine("BulkInsert: 10 000 000");
+                    WriteLine("-------------SPECIFICATION---------------------");
+                    WriteLine("BulkInsert initial records: 10 000 000");
                     WriteLine("---------------------------------------------");
                     break;
                 case TestEnum.Test3:
-                    WriteLine("-------------DESCRIPTION---------------------");
-                    WriteLine("BulkInsert: 5 000 000");
+                    WriteLine("-------------SPECIFICATION---------------------");
+                    WriteLine("BulkInsert initial records: 5 000 000");
                     WriteLine("---------------------------------------------");
                     break;
                 case TestEnum.Test4:
-                    WriteLine("-------------DESCRIPTION---------------------");
-                    WriteLine("BulkInsert: 5 000 000");
+                    WriteLine("-------------SPECIFICATION---------------------");
+                    WriteLine("BulkInsert initial records: 5 000 000");
                     WriteLine("---------------------------------------------");
                     break;
                 case TestEnum.Test5:
-                    WriteLine("-------------DESCRIPTION---------------------");
-                    WriteLine("BulkInsert: 1 000 000");
+                    WriteLine("-------------SPECIFICATION---------------------");
+                    WriteLine("BulkInsert initial records: 1 000 000");
                     WriteLine("---------------------------------------------");
                     break;
                 case TestEnum.Test6:
-                    WriteLine("-------------DESCRIPTION---------------------");
-                    WriteLine("BulkInsert: 1 000 000");
+                    WriteLine("-------------SPECIFICATION---------------------");
+                    WriteLine("BulkInsert initial records: 1 000 000");
                     WriteLine("---------------------------------------------");
                     break;
                 default:
@@ -65,8 +70,8 @@ namespace ArchiveData.UI
             switch (testEnum)
             {
                 case TestEnum.Test1:
-                    WriteLine("-------------DESCRIPTION---------------------");
-                    WriteLine("BulkInsert: 10 000 000");
+                    WriteLine("-------------SPECIFICATION---------------------");
+                    WriteLine("BulkInsert initial records: 10 000 000");
                     WriteLine("Additional records: 10 500");
                     WriteLine("Limit after we archiving: 10 010 000");
                     WriteLine("We archive: 2 000 000 ");
@@ -74,40 +79,40 @@ namespace ArchiveData.UI
 
                     break;
                 case TestEnum.Test2:
-                    WriteLine("-------------DESCRIPTION---------------------");
-                    WriteLine("BulkInsert: 10 000 000");
+                    WriteLine("-------------SPECIFICATION---------------------");
+                    WriteLine("BulkInsert initial records: 10 000 000");
                     WriteLine("Additional records: 10 500");
                     WriteLine("Limit after we archiving: 10 010 000");
                     WriteLine("We archive: 200 000");
                     WriteLine("---------------------------------------------");
                     break;
                 case TestEnum.Test3:
-                    WriteLine("-------------DESCRIPTION---------------------");
-                    WriteLine("BulkInsert: 5 000 000");
+                    WriteLine("-------------SPECIFICATION---------------------");
+                    WriteLine("BulkInsert initial records: 5 000 000");
                     WriteLine("Additional records: 10 500");
                     WriteLine("Limit after we archiving: 5 010 000");
                     WriteLine("We archive: 1 000 000 ");
                     WriteLine("---------------------------------------------");
                     break;
                 case TestEnum.Test4:
-                    WriteLine("-------------DESCRIPTION---------------------");
-                    WriteLine("BulkInsert: 5 000 000");
+                    WriteLine("-------------SPECIFICATION---------------------");
+                    WriteLine("BulkInsert initial records: 5 000 000");
                     WriteLine("Additional records: 10 500");
                     WriteLine("Limit after we archiving: 5 010 000");
                     WriteLine("We archive: 200 000 ");
                     WriteLine("---------------------------------------------");
                     break;
                 case TestEnum.Test5:
-                    WriteLine("-------------DESCRIPTION---------------------");
-                    WriteLine("BulkInsert: 1 000 000");
+                    WriteLine("-------------SPECIFICATION---------------------");
+                    WriteLine("BulkInsert initial records: 1 000 000");
                     WriteLine("Additional records: 10 500");
                     WriteLine("Limit after we archiving: 1 010 000");
                     WriteLine("We archive: 500 000 ");
                     WriteLine("---------------------------------------------");
                     break;
                 case TestEnum.Test6:
-                    WriteLine("-------------DESCRIPTION---------------------");
-                    WriteLine("BulkInsert: 1 000 000");
+                    WriteLine("-------------SPECIFICATION---------------------");
+                    WriteLine("BulkInsert initial records: 1 000 000");
                     WriteLine("Additional records: 10 500");
                     WriteLine("Limit after we archiving: 1 010 000");
                     WriteLine("We archive: 200 000 ");
