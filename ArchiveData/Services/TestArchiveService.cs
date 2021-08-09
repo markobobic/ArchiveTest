@@ -23,66 +23,66 @@ namespace ArchiveData.Services
 
         public async Task RunOnlyBulkTests()
         {
-            
-        //    var configBulkInsertTest6 = new TestConfig(1000000,
-        //                                               TestEnum.Test6,
-        //                                               TestType.OnlyBulkInsert);
-        //    var result = TestBulkInsertOnly(configBulkInsertTest6, _db);
-        //    TestUI.ShowMeasurementsResults(await result);
 
-        //    var configBulkInsertTest4 = new TestConfig(5000000,
-        //                                              TestEnum.Test4,
-        //                                              TestType.OnlyBulkInsert);
-        //    var result1 = TestBulkInsertOnly(configBulkInsertTest4, _db);
-        //    TestUI.ShowMeasurementsResults(await result1);
+            var configBulkInsertTest6 = new TestConfig(1000000,
+                                                       TestEnum.Test6,
+                                                       TestType.OnlyBulkInsert);
+            var result = TestBulkInsertOnly(configBulkInsertTest6, _db);
+            TestUI.ShowMeasurementsResults(await result);
 
-        //    var configBulkInsertTest1 = new TestConfig(10000000,
-        //                                             TestEnum.Test1,
-        //                                             TestType.OnlyBulkInsert);
-        //    var result2 = TestBulkInsertOnly(configBulkInsertTest1, _db);
-        //    TestUI.ShowMeasurementsResults(await result2);
-        //}
-        //public async Task RunOnlySaveChangesTests()
-        //{
-        //    var configBulkInsertTest1 = new TestConfig(10000000,
-        //                                                10501,
-        //                                                2000000,
-        //                                               TestEnum.Test1,
-        //                                               TestType.OnlySaveChanges);
-        //    var result1 = TestSaveChangesOnly(configBulkInsertTest1, _db);
-        //    TestUI.ShowMeasurementsResults(await result1);
+            var configBulkInsertTest4 = new TestConfig(5000000,
+                                                      TestEnum.Test4,
+                                                      TestType.OnlyBulkInsert);
+            var result1 = TestBulkInsertOnly(configBulkInsertTest4, _db);
+            TestUI.ShowMeasurementsResults(await result1);
 
-        //    var configBulkInsertTest2 = new TestConfig(10000000,
-        //                                                10500,
-        //                                                200000,
-        //                                               TestEnum.Test2,
-        //                                               TestType.OnlySaveChanges);
-        //    var result2 = TestSaveChangesOnly(configBulkInsertTest2, _db);
-        //    TestUI.ShowMeasurementsResults(await result2);
+            var configBulkInsertTest1 = new TestConfig(10000000,
+                                                     TestEnum.Test1,
+                                                     TestType.OnlyBulkInsert);
+            var result2 = TestBulkInsertOnly(configBulkInsertTest1, _db);
+            TestUI.ShowMeasurementsResults(await result2);
+        }
+        public async Task RunOnlySaveChangesTests()
+        {
+            var configBulkInsertTest1 = new TestConfig(10000000,
+                                                        10501,
+                                                        2000000,
+                                                       TestEnum.Test1,
+                                                       TestType.OnlySaveChanges);
+            var result1 = TestSaveChangesOnly(configBulkInsertTest1, _db);
+            TestUI.ShowMeasurementsResults(await result1);
 
-        //    var configBulkInsertTest3 = new TestConfig(5000000,
-        //                                                10501,
-        //                                                1000000,
-        //                                               TestEnum.Test3,
-        //                                               TestType.OnlySaveChanges);
-        //    var result3 = TestSaveChangesOnly(configBulkInsertTest3, _db);
-        //    TestUI.ShowMeasurementsResults(await result3);
+            var configBulkInsertTest2 = new TestConfig(10000000,
+                                                        10500,
+                                                        200000,
+                                                       TestEnum.Test2,
+                                                       TestType.OnlySaveChanges);
+            var result2 = TestSaveChangesOnly(configBulkInsertTest2, _db);
+            TestUI.ShowMeasurementsResults(await result2);
 
-        //    var configBulkInsertTest4 = new TestConfig(5000000,
-        //                                               10500,
-        //                                               200000,
-        //                                              TestEnum.Test4,
-        //                                              TestType.OnlySaveChanges);
-        //    var result4 = TestSaveChangesOnly(configBulkInsertTest4, _db);
-        //    TestUI.ShowMeasurementsResults(await result4);
+            var configBulkInsertTest3 = new TestConfig(5000000,
+                                                        10501,
+                                                        1000000,
+                                                       TestEnum.Test3,
+                                                       TestType.OnlySaveChanges);
+            var result3 = TestSaveChangesOnly(configBulkInsertTest3, _db);
+            TestUI.ShowMeasurementsResults(await result3);
 
-        //    var configBulkInsertTest5 = new TestConfig(1000000,
-        //                                              10501,
-        //                                              500000,
-        //                                             TestEnum.Test5,
-        //                                             TestType.OnlySaveChanges);
-        //    var result5 = TestSaveChangesOnly(configBulkInsertTest5, _db);
-        //    TestUI.ShowMeasurementsResults(await result5);
+            var configBulkInsertTest4 = new TestConfig(5000000,
+                                                       10500,
+                                                       200000,
+                                                      TestEnum.Test4,
+                                                      TestType.OnlySaveChanges);
+            var result4 = TestSaveChangesOnly(configBulkInsertTest4, _db);
+            TestUI.ShowMeasurementsResults(await result4);
+
+            var configBulkInsertTest5 = new TestConfig(1000000,
+                                                      10501,
+                                                      500000,
+                                                     TestEnum.Test5,
+                                                     TestType.OnlySaveChanges);
+            var result5 = TestSaveChangesOnly(configBulkInsertTest5, _db);
+            TestUI.ShowMeasurementsResults(await result5);
 
             var configBulkInsertTest6 = new TestConfig(1000000,
                                                      10500,
