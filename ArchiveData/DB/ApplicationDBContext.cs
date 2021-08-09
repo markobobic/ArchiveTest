@@ -87,6 +87,9 @@ namespace ArchiveData.DB
                 case 10010501:
                     archiveLimit = 2000000;
                     break;
+                case 10010500:
+                    archiveLimit = 200000;
+                    break;
                 case 1001050:
                     archiveLimit = 200000;
                     break;

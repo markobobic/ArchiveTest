@@ -1,7 +1,5 @@
 ﻿using ArchiveData.DB;
 using ArchiveData.Services;
-using ArchiveData.Tests;
-using ArchiveData.UI;
 using static System.Console;
 
 namespace ArchiveData
