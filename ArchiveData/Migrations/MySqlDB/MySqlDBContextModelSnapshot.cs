@@ -19,26 +19,24 @@ namespace ArchiveData.Migrations.MySqlDB
 
             modelBuilder.Entity("ArchiveData.Model.ArchivedInputNotification", b =>
                 {
-                    b.Property<string>("EventId")
-                        .HasMaxLength(36)
-                        .HasColumnType("varchar(36)");
+                    b.Property<Guid>("EventId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("AcknowledgmentTimeStampUtc")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("TIMESTAMP");
 
                     b.Property<string>("ClientId")
-                        .HasMaxLength(36)
                         .HasColumnType("varchar(36)");
 
-                    b.Property<string>("EventDefinitionId")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("EventDefinitionId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<string>("EventTargetId")
-                        .HasMaxLength(36)
-                        .HasColumnType("varchar(36)");
+                    b.Property<Guid>("EventTargetId")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("SourceEventTimeStampUtc")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("TIMESTAMP");
 
                     b.HasKey("EventId");
 
@@ -49,8 +47,9 @@ namespace ArchiveData.Migrations.MySqlDB
 
             modelBuilder.Entity("ArchiveData.Model.InputNotificationEventDefinitionEntity", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("EventType")
                         .IsRequired()
@@ -67,26 +66,25 @@ namespace ArchiveData.Migrations.MySqlDB
 
             modelBuilder.Entity("ArchiveData.Model.InputNotificationEventEntity", b =>
                 {
-                    b.Property<string>("EventId")
-                        .HasMaxLength(36)
-                        .HasColumnType("varchar(36)");
+                    b.Property<Guid>("EventId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("AcknowledgmentTimeStampUtc")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("TIMESTAMP");
 
                     b.Property<string>("ClientId")
-                        .HasMaxLength(36)
                         .HasColumnType("varchar(36)");
 
-                    b.Property<string>("EventDefinitionId")
-                        .HasColumnType("varchar(255)");
+                    b.Property<Guid>("EventDefinitionId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<string>("EventTargetId")
+                    b.Property<Guid>("EventTargetId")
                         .HasMaxLength(36)
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("SourceEventTimeStampUtc")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("TIMESTAMP");
 
                     b.HasKey("EventId");
 
@@ -101,7 +99,9 @@ namespace ArchiveData.Migrations.MySqlDB
                 {
                     b.HasOne("ArchiveData.Model.InputNotificationEventDefinitionEntity", "EventDefinition")
                         .WithMany()
-                        .HasForeignKey("EventDefinitionId");
+                        .HasForeignKey("EventDefinitionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("EventDefinition");
                 });
@@ -110,7 +110,9 @@ namespace ArchiveData.Migrations.MySqlDB
                 {
                     b.HasOne("ArchiveData.Model.InputNotificationEventDefinitionEntity", "EventDefinition")
                         .WithMany()
-                        .HasForeignKey("EventDefinitionId");
+                        .HasForeignKey("EventDefinitionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("EventDefinition");
                 });

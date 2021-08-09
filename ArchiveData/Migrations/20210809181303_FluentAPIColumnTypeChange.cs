@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ArchiveData.Migrations
 {
-    public partial class ChangeInit : Migration
+    public partial class FluentAPIColumnTypeChange : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,7 +11,7 @@ namespace ArchiveData.Migrations
                 name: "InputNotificationEventDefinitionEntities",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<string>(type: "char(36)", nullable: false),
                     EventType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TermType = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -24,12 +24,12 @@ namespace ArchiveData.Migrations
                 name: "ArchivedInputNotifications",
                 columns: table => new
                 {
-                    EventId = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
-                    EventDefinitionId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    EventTargetId = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: true),
-                    SourceEventTimeStampUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AcknowledgmentTimeStampUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ClientId = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: true)
+                    EventId = table.Column<string>(type: "char(36)", nullable: false),
+                    EventDefinitionId = table.Column<string>(type: "char(36)", nullable: false),
+                    EventTargetId = table.Column<string>(type: "char(36)", nullable: false),
+                    SourceEventTimeStampUtc = table.Column<DateTime>(type: "smalldatetime", nullable: false),
+                    AcknowledgmentTimeStampUtc = table.Column<DateTime>(type: "smalldatetime", nullable: false),
+                    ClientId = table.Column<string>(type: "char(36)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -39,19 +39,19 @@ namespace ArchiveData.Migrations
                         column: x => x.EventDefinitionId,
                         principalTable: "InputNotificationEventDefinitionEntities",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "InputNotificationEventEntities",
                 columns: table => new
                 {
-                    EventId = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: false),
-                    EventDefinitionId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    EventTargetId = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: true),
-                    SourceEventTimeStampUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AcknowledgmentTimeStampUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ClientId = table.Column<string>(type: "nvarchar(36)", maxLength: 36, nullable: true)
+                    EventId = table.Column<string>(type: "char(36)", nullable: false),
+                    EventDefinitionId = table.Column<string>(type: "char(36)", nullable: false),
+                    EventTargetId = table.Column<string>(type: "char(36)", maxLength: 36, nullable: false),
+                    SourceEventTimeStampUtc = table.Column<DateTime>(type: "smalldatetime", nullable: false),
+                    AcknowledgmentTimeStampUtc = table.Column<DateTime>(type: "smalldatetime", nullable: false),
+                    ClientId = table.Column<string>(type: "char(36)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -61,7 +61,7 @@ namespace ArchiveData.Migrations
                         column: x => x.EventDefinitionId,
                         principalTable: "InputNotificationEventDefinitionEntities",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

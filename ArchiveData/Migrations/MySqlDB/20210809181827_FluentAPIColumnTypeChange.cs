@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ArchiveData.Migrations.MySqlDB
 {
-    public partial class Init : Migration
+    public partial class FluentAPIColumnTypeChange : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,8 +14,7 @@ namespace ArchiveData.Migrations.MySqlDB
                 name: "InputNotificationEventDefinitionEntities",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     EventType = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TermType = table.Column<string>(type: "longtext", nullable: false)
@@ -31,15 +30,12 @@ namespace ArchiveData.Migrations.MySqlDB
                 name: "ArchivedInputNotifications",
                 columns: table => new
                 {
-                    EventId = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    EventDefinitionId = table.Column<string>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    EventTargetId = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    SourceEventTimeStampUtc = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    AcknowledgmentTimeStampUtc = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ClientId = table.Column<string>(type: "longtext", nullable: true)
+                    EventId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    EventDefinitionId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    EventTargetId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    SourceEventTimeStampUtc = table.Column<DateTime>(type: "TIMESTAMP", nullable: false),
+                    AcknowledgmentTimeStampUtc = table.Column<DateTime>(type: "TIMESTAMP", nullable: false),
+                    ClientId = table.Column<string>(type: "varchar(36)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -50,7 +46,7 @@ namespace ArchiveData.Migrations.MySqlDB
                         column: x => x.EventDefinitionId,
                         principalTable: "InputNotificationEventDefinitionEntities",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -58,15 +54,12 @@ namespace ArchiveData.Migrations.MySqlDB
                 name: "InputNotificationEventEntities",
                 columns: table => new
                 {
-                    EventId = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    EventDefinitionId = table.Column<string>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    EventTargetId = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    SourceEventTimeStampUtc = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    AcknowledgmentTimeStampUtc = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ClientId = table.Column<string>(type: "longtext", nullable: true)
+                    EventId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    EventDefinitionId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    EventTargetId = table.Column<Guid>(type: "char(36)", maxLength: 36, nullable: false, collation: "ascii_general_ci"),
+                    SourceEventTimeStampUtc = table.Column<DateTime>(type: "TIMESTAMP", nullable: false),
+                    AcknowledgmentTimeStampUtc = table.Column<DateTime>(type: "TIMESTAMP", nullable: false),
+                    ClientId = table.Column<string>(type: "varchar(36)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -77,7 +70,7 @@ namespace ArchiveData.Migrations.MySqlDB
                         column: x => x.EventDefinitionId,
                         principalTable: "InputNotificationEventDefinitionEntities",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 

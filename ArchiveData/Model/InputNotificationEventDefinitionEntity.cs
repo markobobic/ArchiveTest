@@ -8,7 +8,7 @@ namespace ArchiveData.Model
     public class InputNotificationEventDefinitionEntity
     {
         [Key]
-        public string Id { get; set; } 
+        public Guid Id { get; set; } 
 
         public EventType EventType { get; set; }
 
