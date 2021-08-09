@@ -11,12 +11,16 @@ namespace ArchiveData
         static async Task Main(string[] args)
         {
             
-          
-            TestArchiveService services = new TestArchiveService(new MockDataService(), DBConfigEnum.MySql);
-            await services.RunOnlySaveChangesTests();
-            await services.RunOnlyBulkTests();
-            services.Reset();
-
+            // SQL SERVER
+            TestArchiveService servicesSqlServer = new TestArchiveService(new MockDataService(), DBConfigEnum.SqlServer);
+            await servicesSqlServer.RunOnlySaveChangesTests();
+            await servicesSqlServer.RunOnlyBulkTests();
+            
+            //MY SQL
+            TestArchiveService servicesMySql = new TestArchiveService(new MockDataService(), DBConfigEnum.SqlServer);
+            await servicesMySql.RunOnlySaveChangesTests();
+            await servicesMySql.RunOnlyBulkTests();
+           
             ReadLine();
 
         }

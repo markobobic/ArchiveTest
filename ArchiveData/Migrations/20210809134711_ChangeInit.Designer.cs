@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArchiveData.Migrations
 {
     [DbContext(typeof(SqlServerDBContext))]
-    [Migration("20210804203557_FixTable")]
-    partial class FixTable
+    [Migration("20210809134711_ChangeInit")]
+    partial class ChangeInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,21 +23,23 @@ namespace ArchiveData.Migrations
 
             modelBuilder.Entity("ArchiveData.Model.ArchivedInputNotification", b =>
                 {
-                    b.Property<Guid>("EventId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("EventId")
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
 
                     b.Property<DateTime>("AcknowledgmentTimeStampUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ClientId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
 
-                    b.Property<Guid>("EventDefinitionId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("EventDefinitionId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EventTargetId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
 
                     b.Property<DateTime>("SourceEventTimeStampUtc")
                         .HasColumnType("datetime2");
@@ -51,9 +53,8 @@ namespace ArchiveData.Migrations
 
             modelBuilder.Entity("ArchiveData.Model.InputNotificationEventDefinitionEntity", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EventType")
                         .IsRequired()
@@ -70,21 +71,23 @@ namespace ArchiveData.Migrations
 
             modelBuilder.Entity("ArchiveData.Model.InputNotificationEventEntity", b =>
                 {
-                    b.Property<Guid>("EventId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("EventId")
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
 
                     b.Property<DateTime>("AcknowledgmentTimeStampUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ClientId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
 
-                    b.Property<Guid>("EventDefinitionId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("EventDefinitionId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EventTargetId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
 
                     b.Property<DateTime>("SourceEventTimeStampUtc")
                         .HasColumnType("datetime2");
@@ -93,6 +96,8 @@ namespace ArchiveData.Migrations
 
                     b.HasIndex("EventDefinitionId");
 
+                    b.HasIndex(new[] { "SourceEventTimeStampUtc" }, "IX_SourceEventTimeStampUTC");
+
                     b.ToTable("InputNotificationEventEntities");
                 });
 
@@ -100,9 +105,7 @@ namespace ArchiveData.Migrations
                 {
                     b.HasOne("ArchiveData.Model.InputNotificationEventDefinitionEntity", "EventDefinition")
                         .WithMany()
-                        .HasForeignKey("EventDefinitionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EventDefinitionId");
 
                     b.Navigation("EventDefinition");
                 });
@@ -111,9 +114,7 @@ namespace ArchiveData.Migrations
                 {
                     b.HasOne("ArchiveData.Model.InputNotificationEventDefinitionEntity", "EventDefinition")
                         .WithMany()
-                        .HasForeignKey("EventDefinitionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EventDefinitionId");
 
                     b.Navigation("EventDefinition");
                 });

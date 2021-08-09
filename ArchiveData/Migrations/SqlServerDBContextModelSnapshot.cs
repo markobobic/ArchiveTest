@@ -4,16 +4,14 @@ using ArchiveData.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ArchiveData.Migrations
 {
     [DbContext(typeof(SqlServerDBContext))]
-    [Migration("20210805221045_AddedConstraints")]
-    partial class AddedConstraints
+    partial class SqlServerDBContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,26 +21,26 @@ namespace ArchiveData.Migrations
 
             modelBuilder.Entity("ArchiveData.Model.ArchivedInputNotification", b =>
                 {
-                    b.Property<Guid>("EventId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("EventId")
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
 
                     b.Property<DateTime>("AcknowledgmentTimeStampUtc")
-                        .HasColumnType("smalldatetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ClientId")
                         .HasMaxLength(36)
-                        .HasColumnType("CHAR(36)");
+                        .HasColumnType("nvarchar(36)");
 
-                    b.Property<Guid>("EventDefinitionId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("EventDefinitionId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EventTargetId")
                         .HasMaxLength(36)
-                        .HasColumnType("CHAR(36)");
+                        .HasColumnType("nvarchar(36)");
 
                     b.Property<DateTime>("SourceEventTimeStampUtc")
-                        .HasColumnType("smalldatetime");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("EventId");
 
@@ -53,9 +51,8 @@ namespace ArchiveData.Migrations
 
             modelBuilder.Entity("ArchiveData.Model.InputNotificationEventDefinitionEntity", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EventType")
                         .IsRequired()
@@ -72,26 +69,26 @@ namespace ArchiveData.Migrations
 
             modelBuilder.Entity("ArchiveData.Model.InputNotificationEventEntity", b =>
                 {
-                    b.Property<Guid>("EventId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("EventId")
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
 
                     b.Property<DateTime>("AcknowledgmentTimeStampUtc")
-                        .HasColumnType("smalldatetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ClientId")
                         .HasMaxLength(36)
-                        .HasColumnType("CHAR(36)");
+                        .HasColumnType("nvarchar(36)");
 
-                    b.Property<Guid>("EventDefinitionId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("EventDefinitionId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EventTargetId")
                         .HasMaxLength(36)
-                        .HasColumnType("CHAR(36)");
+                        .HasColumnType("nvarchar(36)");
 
                     b.Property<DateTime>("SourceEventTimeStampUtc")
-                        .HasColumnType("smalldatetime");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("EventId");
 
@@ -106,9 +103,7 @@ namespace ArchiveData.Migrations
                 {
                     b.HasOne("ArchiveData.Model.InputNotificationEventDefinitionEntity", "EventDefinition")
                         .WithMany()
-                        .HasForeignKey("EventDefinitionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EventDefinitionId");
 
                     b.Navigation("EventDefinition");
                 });
@@ -117,9 +112,7 @@ namespace ArchiveData.Migrations
                 {
                     b.HasOne("ArchiveData.Model.InputNotificationEventDefinitionEntity", "EventDefinition")
                         .WithMany()
-                        .HasForeignKey("EventDefinitionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EventDefinitionId");
 
                     b.Navigation("EventDefinition");
                 });
