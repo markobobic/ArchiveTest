@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ArchiveData.Migrations
 {
-    [DbContext(typeof(ApplicationDBContext))]
+    [DbContext(typeof(SqlServerDBContext))]
     [Migration("20210805221045_AddedConstraints")]
     partial class AddedConstraints
     {

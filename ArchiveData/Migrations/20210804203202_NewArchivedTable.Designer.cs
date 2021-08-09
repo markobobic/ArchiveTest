@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ArchiveData.Migrations
 {
-    [DbContext(typeof(ApplicationDBContext))]
+    [DbContext(typeof(SqlServerDBContext))]
     [Migration("20210804203202_NewArchivedTable")]
     partial class NewArchivedTable
     {

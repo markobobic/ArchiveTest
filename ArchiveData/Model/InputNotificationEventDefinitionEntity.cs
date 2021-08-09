@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ArchiveData.Model
 {
     public class InputNotificationEventDefinitionEntity
     {
         [Key]
-        [Required]
-        public Guid Id { get; set; } 
+        public string Id { get; set; } 
 
         public EventType EventType { get; set; }
 

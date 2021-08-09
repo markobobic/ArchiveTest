@@ -1,21 +1,22 @@
-﻿using ArchiveData.DB;
+﻿using ArchiveData.Configuration;
+using ArchiveData.DB;
 using ArchiveData.Services;
+using System.Threading.Tasks;
 using static System.Console;
 
 namespace ArchiveData
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-
-            using var db = new ApplicationDBContext();
-            TestArchiveService services = new TestArchiveService(new MockDataService());
-            services.RunOnlySaveChangesTests(db);
-            services.RunOnlyBulkTests(db);
-            //services.Reset(db);
             
-           
+          
+            TestArchiveService services = new TestArchiveService(new MockDataService(), DBConfigEnum.MySql);
+            await services.RunOnlySaveChangesTests();
+            await services.RunOnlyBulkTests();
+            services.Reset();
+
             ReadLine();
 
         }

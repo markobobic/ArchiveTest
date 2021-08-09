@@ -3,44 +3,44 @@ using System;
 using ArchiveData.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace ArchiveData.Migrations
+namespace ArchiveData.Migrations.MySqlDB
 {
-    [DbContext(typeof(SqlServerDBContext))]
-    [Migration("20210804203557_FixTable")]
-    partial class FixTable
+    [DbContext(typeof(MySqlDBContext))]
+    [Migration("20210809123015_ChangeInit")]
+    partial class ChangeInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.8")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .HasAnnotation("ProductVersion", "5.0.8");
 
             modelBuilder.Entity("ArchiveData.Model.ArchivedInputNotification", b =>
                 {
-                    b.Property<Guid>("EventId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("EventId")
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.Property<DateTime>("AcknowledgmentTimeStampUtc")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("ClientId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
-                    b.Property<Guid>("EventDefinitionId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("EventDefinitionId")
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("EventTargetId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.Property<DateTime>("SourceEventTimeStampUtc")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("EventId");
 
@@ -51,17 +51,16 @@ namespace ArchiveData.Migrations
 
             modelBuilder.Entity("ArchiveData.Model.InputNotificationEventDefinitionEntity", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("EventType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("TermType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -70,28 +69,32 @@ namespace ArchiveData.Migrations
 
             modelBuilder.Entity("ArchiveData.Model.InputNotificationEventEntity", b =>
                 {
-                    b.Property<Guid>("EventId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("EventId")
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.Property<DateTime>("AcknowledgmentTimeStampUtc")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("ClientId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
-                    b.Property<Guid>("EventDefinitionId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("EventDefinitionId")
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("EventTargetId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.Property<DateTime>("SourceEventTimeStampUtc")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("EventId");
 
                     b.HasIndex("EventDefinitionId");
+
+                    b.HasIndex(new[] { "SourceEventTimeStampUtc" }, "IX_SourceEventTimeStampUTC");
 
                     b.ToTable("InputNotificationEventEntities");
                 });
@@ -100,9 +103,7 @@ namespace ArchiveData.Migrations
                 {
                     b.HasOne("ArchiveData.Model.InputNotificationEventDefinitionEntity", "EventDefinition")
                         .WithMany()
-                        .HasForeignKey("EventDefinitionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EventDefinitionId");
 
                     b.Navigation("EventDefinition");
                 });
@@ -111,9 +112,7 @@ namespace ArchiveData.Migrations
                 {
                     b.HasOne("ArchiveData.Model.InputNotificationEventDefinitionEntity", "EventDefinition")
                         .WithMany()
-                        .HasForeignKey("EventDefinitionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EventDefinitionId");
 
                     b.Navigation("EventDefinition");
                 });
