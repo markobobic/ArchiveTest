@@ -30,52 +30,21 @@ namespace ArchiveData.Services
             var result = TestBulkInsertOnly(configBulkInsertTest6, _db);
             TestUI.ShowMeasurementsResults(await result);
 
-            var configBulkInsertTest4 = new TestConfig(5000000,
-                                                      TestEnum.Test4,
-                                                      TestType.OnlyBulkInsert);
-            var result1 = TestBulkInsertOnly(configBulkInsertTest4, _db);
-            TestUI.ShowMeasurementsResults(await result1);
+            //var configBulkInsertTest4 = new TestConfig(5000000,
+            //                                          TestEnum.Test4,
+            //                                          TestType.OnlyBulkInsert);
+            //var result1 = TestBulkInsertOnly(configBulkInsertTest4, _db);
+            //TestUI.ShowMeasurementsResults(await result1);
 
-            var configBulkInsertTest1 = new TestConfig(10000000,
-                                                     TestEnum.Test1,
-                                                     TestType.OnlyBulkInsert);
-            var result2 = TestBulkInsertOnly(configBulkInsertTest1, _db);
-            TestUI.ShowMeasurementsResults(await result2);
+            //var configBulkInsertTest1 = new TestConfig(10000000,
+            //                                         TestEnum.Test1,
+            //                                         TestType.OnlyBulkInsert);
+            //var result2 = TestBulkInsertOnly(configBulkInsertTest1, _db);
+            //TestUI.ShowMeasurementsResults(await result2);
         }
         public async Task RunOnlySaveChangesTests()
         {
-            var configBulkInsertTest1 = new TestConfig(10000000,
-                                                        10501,
-                                                        2000000,
-                                                       TestEnum.Test1,
-                                                       TestType.OnlySaveChanges);
-            var result1 = TestSaveChangesOnly(configBulkInsertTest1, _db);
-            TestUI.ShowMeasurementsResults(await result1);
-
-            var configBulkInsertTest2 = new TestConfig(10000000,
-                                                        10500,
-                                                        200000,
-                                                       TestEnum.Test2,
-                                                       TestType.OnlySaveChanges);
-            var result2 = TestSaveChangesOnly(configBulkInsertTest2, _db);
-            TestUI.ShowMeasurementsResults(await result2);
-
-            var configBulkInsertTest3 = new TestConfig(5000000,
-                                                        10501,
-                                                        1000000,
-                                                       TestEnum.Test3,
-                                                       TestType.OnlySaveChanges);
-            var result3 = TestSaveChangesOnly(configBulkInsertTest3, _db);
-            TestUI.ShowMeasurementsResults(await result3);
-
-            var configBulkInsertTest4 = new TestConfig(5000000,
-                                                       10500,
-                                                       200000,
-                                                      TestEnum.Test4,
-                                                      TestType.OnlySaveChanges);
-            var result4 = TestSaveChangesOnly(configBulkInsertTest4, _db);
-            TestUI.ShowMeasurementsResults(await result4);
-
+           
             var configBulkInsertTest5 = new TestConfig(1000000,
                                                       10501,
                                                       500000,
@@ -91,6 +60,38 @@ namespace ArchiveData.Services
                                                     TestType.OnlySaveChanges);
             var result6 = TestSaveChangesOnly(configBulkInsertTest6, _db);
             TestUI.ShowMeasurementsResults(await result6);
+
+            //var configBulkInsertTest1 = new TestConfig(10000000,
+            //                                           10501,
+            //                                           2000000,
+            //                                          TestEnum.Test1,
+            //                                          TestType.OnlySaveChanges);
+            //var result1 = TestSaveChangesOnly(configBulkInsertTest1, _db);
+            //TestUI.ShowMeasurementsResults(await result1);
+
+            //var configBulkInsertTest2 = new TestConfig(10000000,
+            //                                            10500,
+            //                                            200000,
+            //                                           TestEnum.Test2,
+            //                                           TestType.OnlySaveChanges);
+            //var result2 = TestSaveChangesOnly(configBulkInsertTest2, _db);
+            //TestUI.ShowMeasurementsResults(await result2);
+
+            //var configBulkInsertTest3 = new TestConfig(5000000,
+            //                                            10501,
+            //                                            1000000,
+            //                                           TestEnum.Test3,
+            //                                           TestType.OnlySaveChanges);
+            //var result3 = TestSaveChangesOnly(configBulkInsertTest3, _db);
+            //TestUI.ShowMeasurementsResults(await result3);
+
+            //var configBulkInsertTest4 = new TestConfig(5000000,
+            //                                           10500,
+            //                                           200000,
+            //                                          TestEnum.Test4,
+            //                                          TestType.OnlySaveChanges);
+            //var result4 = TestSaveChangesOnly(configBulkInsertTest4, _db);
+            //TestUI.ShowMeasurementsResults(await result4);
 
         }
 
@@ -112,7 +113,7 @@ namespace ArchiveData.Services
                 stopWatch.Start();
                 await db.InputNotificationEventEntities.BulkInsertAsync(initialData);
                 stopWatch.Stop();
-             
+                Console.WriteLine("Initial date populated");
                 TimeSpan ts = stopWatch.Elapsed;
                 TestUI.WriteOrdinalIterations(i, ts);
                 timeSpans.Add(ts);
@@ -149,7 +150,7 @@ namespace ArchiveData.Services
 
                     Console.WriteLine(e.Message);
                 }
-               
+                Console.WriteLine("Initial date populated and additional");
                 stopWatch.Start();
                 await db.SaveChangesAsync();
                 stopWatch.Stop();
