@@ -9,6 +9,7 @@ namespace ArchiveData.Configuration
     public enum DBConfigEnum
     {
         MySql,
-        SqlServer
+        SqlServer,
+        PostgreSql
     }
 }

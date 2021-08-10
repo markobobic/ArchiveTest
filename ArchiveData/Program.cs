@@ -1,5 +1,4 @@
 ﻿using ArchiveData.Configuration;
-using ArchiveData.DB;
 using ArchiveData.Services;
 using System.Threading.Tasks;
 using static System.Console;
@@ -19,11 +18,16 @@ namespace ArchiveData
             WriteLine("**********************SQL SERVER FINISHED************************************");
 
             WriteLine("********************************MYSQL STARTING********************************");
-            //MY SQL
+            //MY SQL - time stamp => long
             TestArchiveService servicesMySql = new TestArchiveService(new MockDataService(), DBConfigEnum.SqlServer);
             await servicesMySql.RunOnlySaveChangesTests();
             await servicesMySql.RunOnlyBulkTests();
             //servicesMySql.Reset();
+
+            //PostgresSQL
+            TestArchiveService servicesPostgreSql = new TestArchiveService(new MockDataService(), DBConfigEnum.PostgreSql);
+            await servicesMySql.RunOnlySaveChangesTests();
+            await servicesMySql.RunOnlyBulkTests();
             ReadLine();
 
         }

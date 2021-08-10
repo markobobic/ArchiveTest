@@ -18,7 +18,13 @@ namespace ArchiveData.Services
         public TestArchiveService(MockDataService mockDataService, DBConfigEnum dbConfig)
         {
             _mockDataService = mockDataService;
-            _db = dbConfig == DBConfigEnum.MySql ? new MySqlDBContext() : new SqlServerDBContext();
+            _db = dbConfig switch
+            {
+                DBConfigEnum.MySql => new MySqlDBContext(),
+                DBConfigEnum.SqlServer => new SqlServerDBContext(),
+                DBConfigEnum.PostgreSql => new PostgreSqlDBContext(),
+                _ => throw new ArgumentOutOfRangeException(nameof(dbConfig), $"Not expected config value: {dbConfig}"),
+            };
         }
 
         public async Task RunOnlyBulkTests()
