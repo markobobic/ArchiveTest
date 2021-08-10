@@ -3,3 +3,5 @@
 ################################################################################
 
 /.vs/ArchiveData/v16
+/ArchiveData/bin/Debug/net5.0
+/ArchiveData/obj

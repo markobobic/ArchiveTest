@@ -14,10 +14,12 @@ namespace ArchiveData.Services
     public  class TestArchiveService 
     {
         private readonly MockDataService _mockDataService;
+        private readonly DBConfigEnum _dbConfig;
         private readonly SqlServerDBContext _db;
         public TestArchiveService(MockDataService mockDataService, DBConfigEnum dbConfig)
         {
             _mockDataService = mockDataService;
+            _dbConfig = dbConfig;
             _db = dbConfig switch
             {
                 DBConfigEnum.MySql => new MySqlDBContext(),
@@ -124,7 +126,7 @@ namespace ArchiveData.Services
                 TestUI.WriteOrdinalIterations(i, ts);
                 timeSpans.Add(ts);
                 stopWatch.Reset();
-                Reset();
+                Reset(_dbConfig);
             }
             
             return new TestResult(timeSpans.Average(x => x.TotalSeconds),config.TestEnum,config.TestType);
@@ -165,17 +167,23 @@ namespace ArchiveData.Services
                 TestUI.WriteOrdinalIterations(i, ts);
                 timeSpans.Add(ts);
                 stopWatch.Reset();
-                Reset();
+                Reset(_dbConfig);
             }
             return new TestResult(timeSpans.Average(x => x.TotalSeconds), config.TestEnum, config.TestType);
 
         }
 
-        public void Reset()
+        public void Reset(DBConfigEnum dBConfig)
         {
+            if(dBConfig == DBConfigEnum.PostgreSql)
+            {
+                _db.Database.ExecuteSqlRaw(@"TRUNCATE TABLE ""InputNotificationEventEntities""");
+                _db.Database.ExecuteSqlRaw(@"TRUNCATE TABLE ""ArchivedInputNotifications""");
+                return;
+            }
             _db.Database.ExecuteSqlRaw("TRUNCATE TABLE InputNotificationEventEntities");
             _db.Database.ExecuteSqlRaw("TRUNCATE TABLE ArchivedInputNotifications");
-           
+
         }
 
     }

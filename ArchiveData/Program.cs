@@ -26,12 +26,13 @@ namespace ArchiveData
 
             //PostgresSQL
             TestArchiveService servicesPostgreSql = new TestArchiveService(new MockDataService(), DBConfigEnum.PostgreSql);
-            await servicesMySql.RunOnlySaveChangesTests();
-            await servicesMySql.RunOnlyBulkTests();
+            await servicesPostgreSql.RunOnlySaveChangesTests();
+            await servicesPostgreSql.RunOnlyBulkTests();
+            servicesPostgreSql.Reset(DBConfigEnum.PostgreSql);
             ReadLine();
 
         }
-        
-        
+
+
     }
 }
