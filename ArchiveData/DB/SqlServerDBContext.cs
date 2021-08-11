@@ -75,7 +75,7 @@ namespace ArchiveData.DB
                             typeof(InputNotificationEventEntity).IsAssignableFrom(x.Entity.GetType())) > 0)
             {
                 await ArchiveTable();
-                await Task.FromResult(0);
+                return await Task.FromResult(0);
             }
             var result = await base.SaveChangesAsync(cancellationToken);
             return result;
