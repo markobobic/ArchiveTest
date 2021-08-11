@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ArchiveData.Services
 {
-    public  class TestArchiveService 
+    public class TestArchiveService
     {
         private readonly MockDataService _mockDataService;
         private readonly DBConfigEnum _dbConfig;
@@ -52,7 +52,7 @@ namespace ArchiveData.Services
         }
         public async Task RunOnlySaveChangesTests()
         {
-           
+
             var configBulkInsertTest5 = new TestConfig(1000000,
                                                       10501,
                                                       500000,
@@ -128,9 +128,9 @@ namespace ArchiveData.Services
                 stopWatch.Reset();
                 Reset(_dbConfig);
             }
-            
-            return new TestResult(timeSpans.Average(x => x.TotalSeconds),config.TestEnum,config.TestType);
-           
+
+            return new TestResult(timeSpans.Average(x => x.TotalSeconds), config.TestEnum, config.TestType);
+
         }
 
         private async Task<TestResult> TestSaveChangesOnly(TestConfig config, SqlServerDBContext db)
@@ -143,15 +143,21 @@ namespace ArchiveData.Services
             {
                 db.InputNotificationEventDefinitionEntities.Add(initialData.FirstOrDefault().EventDefinition);
                 await db.SaveChangesAsync();
-            } 
+            }
             additionalData.Select(l => db.Entry(l).State = EntityState.Added).FirstOrDefault();
             TestUI.ShowStartOfTest(config);
             for (int i = 1; i <= 3; i++)
             {
                 try
                 {
-                    db.InputNotificationEventEntities.BulkInsert(initialData);
-                    db.InputNotificationEventEntities.BulkInsert(additionalData);
+                    await db.InputNotificationEventEntities.BulkInsertAsync(initialData, (options) =>
+                    {
+                        options.BatchSize = 5000;
+                    });
+                    db.InputNotificationEventEntities.BulkInsert(additionalData, (options) =>
+                    {
+                        options.BatchSize = 5000;
+                    });
                 }
                 catch (Exception e)
                 {
@@ -162,7 +168,6 @@ namespace ArchiveData.Services
                 stopWatch.Start();
                 await db.SaveChangesAsync();
                 stopWatch.Stop();
-
                 TimeSpan ts = stopWatch.Elapsed;
                 TestUI.WriteOrdinalIterations(i, ts);
                 timeSpans.Add(ts);
@@ -175,7 +180,7 @@ namespace ArchiveData.Services
 
         public void Reset(DBConfigEnum dBConfig)
         {
-            if(dBConfig == DBConfigEnum.PostgreSql)
+            if (dBConfig == DBConfigEnum.PostgreSql)
             {
                 _db.Database.ExecuteSqlRaw(@"TRUNCATE TABLE ""InputNotificationEventEntities""");
                 _db.Database.ExecuteSqlRaw(@"TRUNCATE TABLE ""ArchivedInputNotifications""");

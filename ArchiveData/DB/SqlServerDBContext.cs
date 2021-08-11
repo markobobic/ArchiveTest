@@ -14,6 +14,7 @@ namespace ArchiveData.DB
         public DbSet<ArchivedInputNotification> ArchivedInputNotifications { get; set; }
 
         public DbSet<InputNotificationEventDefinitionEntity> InputNotificationEventDefinitionEntities { get; set; }
+        private static int count = 0;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -68,36 +69,47 @@ namespace ArchiveData.DB
            .Property(a => a.EventTargetId).HasColumnType("char(36)");
         }
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        public  override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            if (ChangeTracker.Entries().AsParallel()
-                .Count(x => x.State == EntityState.Added &&
-                            typeof(InputNotificationEventEntity).IsAssignableFrom(x.Entity.GetType())) > 0)
+            if (CheckForNotificationAdded())
             {
-                await ArchiveTable();
-                return await Task.FromResult(0);
+                ArchiveTable();
+                return Task.FromResult(0);
+
             }
-            var result = await base.SaveChangesAsync(cancellationToken);
-            return result;
+            return  base.SaveChangesAsync(cancellationToken);
         }
        
-        protected async Task ArchiveTable()
+        protected void ArchiveTable()
         {
             int maxLimit = int.MaxValue;
             int archiveLimit = 0;
-            var entitiesListCount = await InputNotificationEventEntities.CountAsync();
+            var entitiesListCount =  InputNotificationEventEntities.Count();
             DetermineMaxLimit(ref maxLimit, entitiesListCount);
             DetermineArchivingLimit(ref archiveLimit, entitiesListCount); 
             if (entitiesListCount > maxLimit)
             {
                 var archivedInputs = InputNotificationEventEntities.OrderByDescending(x => x.SourceEventTimeStampUtc)
                     .Take(archiveLimit);
-                ArchivedInputNotifications.BulkInsert(archivedInputs.ToArchived());
-                await InputNotificationEventEntities.BulkDeleteAsync(archivedInputs);
+                 ArchivedInputNotifications.BulkInsert(archivedInputs.ToArchived(), (options) => {
+                    options.BatchSize = 5000;
+                });
+                 InputNotificationEventEntities.BulkDelete(archivedInputs, (options) => {
+                    options.BatchSize = 5000;
+                });
 
             }
             
         }
+
+        protected bool CheckForNotificationAdded() =>
+            ChangeTracker.Entries().AsParallel()
+                .Count(x => x.State == EntityState.Added &&
+                            typeof(InputNotificationEventEntity).IsAssignableFrom(x.Entity.GetType())) > 0;
+        protected void ClearNotificationStateAdded() => 
+            ChangeTracker.Entries().Where(x => x.State == EntityState.Added &&
+                           typeof(InputNotificationEventEntity).IsAssignableFrom(x.Entity.GetType())).ToList().ForEach(x => x.State = EntityState.Detached);
+
 
         protected void DetermineMaxLimit(ref int maxLimit,int entitiesListCount)
         {

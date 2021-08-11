@@ -68,18 +68,16 @@ namespace ArchiveData.DB
         }
 
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        public override  Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            if (ChangeTracker.Entries().AsParallel()
-                .Count(x => x.State == EntityState.Added &&
-                            typeof(InputNotificationEventEntity).IsAssignableFrom(x.Entity.GetType())) > 0)
+            if (CheckForNotificationAdded())
             {
-                await ArchiveTable();
-                return await Task.FromResult(0);
+                ArchiveTable();
+                return Task.FromResult(0);
 
             }
-            var result = await base.SaveChangesAsync(cancellationToken);
-            return result;
+            return base.SaveChangesAsync(cancellationToken);
+
         }
 
     }
