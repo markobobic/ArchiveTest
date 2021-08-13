@@ -1,4 +1,5 @@
-﻿using ArchiveData.Model;
+﻿using ArchiveData.Extensions;
+using ArchiveData.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace ArchiveData.DB
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseMySql(_connectionString, ServerVersion.AutoDetect(_connectionString));
+           
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,7 +34,7 @@ namespace ArchiveData.DB
 
             //Input notification table
             modelBuilder.Entity<InputNotificationEventEntity>()
-           .Property(a => a.AcknowledgmentTimeStampUtc).HasColumnType("double(50)");
+           .Property(a => a.AcknowledgmentTimeStampUtc).HasColumnType("TIMESTAMP");
             modelBuilder.Entity<InputNotificationEventEntity>()
           .Property(a => a.SourceEventTimeStampUtc).HasColumnType("TIMESTAMP");
 
@@ -48,9 +50,9 @@ namespace ArchiveData.DB
 
             //archive table
             modelBuilder.Entity<ArchivedInputNotification>()
-           .Property(a => a.AcknowledgmentTimeStampUtc).HasColumnType("double(50)");
+           .Property(a => a.AcknowledgmentTimeStampUtc).HasColumnType("TIMESTAMP");
             modelBuilder.Entity<ArchivedInputNotification>()
-           .Property(a => a.SourceEventTimeStampUtc).HasColumnType("double(50)");
+           .Property(a => a.SourceEventTimeStampUtc).HasColumnType("TIMESTAMP");
 
             modelBuilder.Entity<ArchivedInputNotification>()
            .Property(a => a.ClientId).HasColumnType("varchar(36)");
@@ -65,16 +67,18 @@ namespace ArchiveData.DB
         }
 
 
-        public override  Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
-        {
-            if (CheckForNotificationAdded())
-            {
-                ArchiveTable();
-                return Task.FromResult(0);
+        //public override  Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        //{
+        //    if (CheckForNotificationAdded())
+        //    {
+        //        var entitiesListCount = ChangeTracker.Entries().Count();
+        //        ArchiveTable(entitiesListCount);
+        //        var tracker = ChangeTracker.Entries().ToList();
+        //        return base.SaveChangesAsync();
 
-            }
-            return base.SaveChangesAsync(cancellationToken);
-        }
-      
+        //    }
+        //    return base.SaveChangesAsync();
+        //}
+       
     }
 }

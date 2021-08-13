@@ -3,8 +3,8 @@ using ArchiveData.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ArchiveData.DB
 {
@@ -14,7 +14,6 @@ namespace ArchiveData.DB
         public DbSet<ArchivedInputNotification> ArchivedInputNotifications { get; set; }
 
         public DbSet<InputNotificationEventDefinitionEntity> InputNotificationEventDefinitionEntities { get; set; }
-        private static int count = 0;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -69,49 +68,54 @@ namespace ArchiveData.DB
            .Property(a => a.EventTargetId).HasColumnType("char(36)");
         }
 
-        public  override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
-        {
-            if (CheckForNotificationAdded())
-            {
-                ArchiveTable();
-                return Task.FromResult(0);
+        //public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        //{
+        //    var entitiesListCount1 = ChangeTracker.Entries().Count();
+        //    if (CheckForNotificationAdded())
+        //    {
+        //        var entitiesListCount = ChangeTracker.Entries().Count();
+        //        ArchiveTable(entitiesListCount);
+        //        return await base.SaveChangesAsync();
 
-            }
-            return  base.SaveChangesAsync(cancellationToken);
-        }
-       
-        protected void ArchiveTable()
+        //    }
+        //    return await base.SaveChangesAsync();
+        //}
+        //In this case, you should not await the base operation and just return the task without awaitig it.
+        //This may lead to deadlocks when calling from UI thread and waiting for the result.
+        private void ArchiveTable(int entitiesListCount)
         {
             int maxLimit = int.MaxValue;
             int archiveLimit = 0;
-            var entitiesListCount =  InputNotificationEventEntities.Count();
             DetermineMaxLimit(ref maxLimit, entitiesListCount);
-            DetermineArchivingLimit(ref archiveLimit, entitiesListCount); 
+            DetermineArchivingLimit(ref archiveLimit, entitiesListCount);
             if (entitiesListCount > maxLimit)
             {
                 var archivedInputs = InputNotificationEventEntities.OrderByDescending(x => x.SourceEventTimeStampUtc)
                     .Take(archiveLimit);
-                 ArchivedInputNotifications.BulkInsert(archivedInputs.ToArchived(), (options) => {
-                    options.BatchSize = 5000;
-                });
-                 InputNotificationEventEntities.BulkDelete(archivedInputs, (options) => {
-                    options.BatchSize = 5000;
-                });
+                var archived = archivedInputs.ToArchived().ToList();
+                ArchivedInputNotifications.AddRangeAsync(archived);
+                InputNotificationEventEntities.RemoveRange(archivedInputs);
 
+                archived.ForEach(x => Entry(x.EventDefinition).State = EntityState.Detached);
+                archived.ForEach(x => Entry(x).State = EntityState.Added);
             }
-            
+
         }
+       
 
         protected bool CheckForNotificationAdded() =>
             ChangeTracker.Entries().AsParallel()
                 .Count(x => x.State == EntityState.Added &&
                             typeof(InputNotificationEventEntity).IsAssignableFrom(x.Entity.GetType())) > 0;
-        protected void ClearNotificationStateAdded() => 
+        protected void ClearNotificationStateAdded() =>
             ChangeTracker.Entries().Where(x => x.State == EntityState.Added &&
-                           typeof(InputNotificationEventEntity).IsAssignableFrom(x.Entity.GetType())).ToList().ForEach(x => x.State = EntityState.Detached);
+                           typeof(InputNotificationEventEntity).IsAssignableFrom(x.Entity.GetType()))
+                                .ToList().ForEach(x => x.State = EntityState.Detached);
 
 
-        protected void DetermineMaxLimit(ref int maxLimit,int entitiesListCount)
+
+
+        protected void DetermineMaxLimit(ref int maxLimit, int entitiesListCount)
         {
             switch (entitiesListCount)
             {
@@ -124,11 +128,12 @@ namespace ArchiveData.DB
                 case 1010500 or 1010501:
                     maxLimit = 1010000;
                     break;
-                default: maxLimit = 500;
+                default:
+                    maxLimit = 500;
                     break;
             }
         }
-        protected  void DetermineArchivingLimit(ref int archiveLimit, int entitiesListCount)
+        protected void DetermineArchivingLimit(ref int archiveLimit, int entitiesListCount)
         {
             switch (entitiesListCount)
             {
@@ -158,6 +163,6 @@ namespace ArchiveData.DB
                     break;
             }
         }
-        
+
     }
 }

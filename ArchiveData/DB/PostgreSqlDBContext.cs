@@ -1,4 +1,5 @@
-﻿using ArchiveData.Model;
+﻿using ArchiveData.Extensions;
+using ArchiveData.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
@@ -72,14 +73,34 @@ namespace ArchiveData.DB
         {
             if (CheckForNotificationAdded())
             {
-                ArchiveTable();
-                return Task.FromResult(0);
+                var entitiesListCount = ChangeTracker.Entries().Count();
+                ClearNotificationStateAdded();
+                ArchiveTable(entitiesListCount);
+                return base.SaveChangesAsync(cancellationToken);
 
             }
             return base.SaveChangesAsync(cancellationToken);
 
         }
+        private void ArchiveTable(int entitiesListCount)
+        {
+            int maxLimit = int.MaxValue;
+            int archiveLimit = 0;
+            DetermineMaxLimit(ref maxLimit, entitiesListCount);
+            DetermineArchivingLimit(ref archiveLimit, entitiesListCount);
+            if (entitiesListCount > maxLimit)
+            {
+                var archivedInputs = InputNotificationEventEntities.OrderByDescending(x => x.SourceEventTimeStampUtc)
+                    .Take(archiveLimit);
+                var archived = archivedInputs.ToArchived().ToList();
+                ArchivedInputNotifications.AddRangeAsync(archived);
+                InputNotificationEventEntities.RemoveRange(archivedInputs);
 
+                archived.ForEach(x => Entry(x.EventDefinition).State = EntityState.Detached);
+                archived.ForEach(x => Entry(x).State = EntityState.Added);
+            }
+
+        }
     }
 
 }

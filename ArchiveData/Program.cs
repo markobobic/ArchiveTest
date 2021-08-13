@@ -12,16 +12,17 @@ namespace ArchiveData
         {
 
             //SQL SERVER
-            WriteLine("********************************SQLSERVER STARTING********************************");
-            TestArchiveService servicesSqlServer = new TestArchiveService(new MockDataService(), DBConfigEnum.SqlServer);
-            await servicesSqlServer.RunOnlySaveChangesTests();
-            await servicesSqlServer.RunOnlyBulkTests();
-            servicesSqlServer.Reset(DBConfigEnum.SqlServer);
+            //WriteLine("********************************SQLSERVER STARTING********************************");
+            //TestArchiveService servicesSqlServer = new TestArchiveService(new MockDataService(), DBConfigEnum.SqlServer);
+            ////await servicesSqlServer.RunOnlySaveChangesTests();
+            //await servicesSqlServer.RunOnlyBulkTests();
+            //servicesSqlServer.Reset(DBConfigEnum.SqlServer);
+
             WriteLine("**********************SQL SERVER FINISHED************************************");
 
             WriteLine("********************************MYSQL STARTING********************************");
-            //MY SQL - time stamp => long
-            TestArchiveService servicesMySql = new TestArchiveService(new MockDataService(), DBConfigEnum.SqlServer);
+            //MY SQL 
+            TestArchiveService servicesMySql = new TestArchiveService(new MockDataService(), DBConfigEnum.MySql);
             await servicesMySql.RunOnlySaveChangesTests();
             await servicesMySql.RunOnlyBulkTests();
             //servicesMySql.Reset(DBConfigEnum.MySql);
